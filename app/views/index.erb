@@ -1,24 +1,17 @@
 <div class="container">
-  <h1>Welcome to Sinatra!</h1>
-  <img src="favicon128.png" style="float:left; padding-right: 20px">
-  <p>@DandyDanny's customized sinatra skeleton.</p>
+<h1>AdventureTweet</h1>
+  <div class="get_username">
+    <form action="/get_user_tweets" method='post'>
+      <input type="text" name="username" placeholder="Enter a Twitter username">
+      <input type="submit" value="Get tweets">
+    </form>
+  </div>
 
-  <table>
-    <tr>
-      <th>File Description</th>
-      <th>File Location</th>
-    </tr>
-    <tr>
-      <td>This view file</td>
-      <td><code><%= __FILE__.gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-    <tr>
-      <td>The layout file</td>
-      <td><code><%= File.expand_path('../layout.erb', __FILE__).gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-    <tr>
-      <td>The current controller</td>
-      <td><code><%= File.expand_path('../../controllers/index.rb', __FILE__).gsub(Sinatra::Application.root, '') %></code></td>
-    </tr>
-  </table>
+  <% if @tweets %>
+    <h2><%= @username %>'s recent tweets:</h2>
+      <% @tweets.each do |tweet| %>
+      <p><%= tweet %></p>
+    <% end %>
+  <% end %>
+
 </div>

@@ -14,8 +14,11 @@ gem 'activesupport'
 gem 'activerecord'
 
 gem 'rake'
+gem 'pry'
 
 gem 'shotgun'
+
+gem 'twitter'
 
 group :test do
   gem 'faker'
