@@ -4,14 +4,18 @@ get '/' do
 end
 
 get '/:username' do
-  # binding.pry
   @username = params[:username]
   @tweets = []
   if user = local_user?(params[:username]) # Checks whether a user is in the DB
     puts "=================== User found in DB ============================"
-    user.tweets.limit(10).each do |tweet|
-      @tweets << tweet.text
-    end
+    # If user is in the database check if their tweets are stale or fresh
+      if user.tweets_stale?
+        # do API call
+      else
+        user.tweets.limit(10).each do |tweet|
+          @tweets << tweet
+        end
+      end
     @tweets
   else
 
@@ -19,12 +23,14 @@ get '/:username' do
     # user = get_user_timeline_tweets(params[:username])
     # redirect("/error") if user.nil?
     # Come back to change the error page!!!!!!!!!!!!!!!!!!!!!!
+    # Check is data is stale
     if user_timeline = get_user_timeline_tweets(params[:username]) # Checks whether user exists in Twitterverse
       puts "=================== User is in Twitterverse ============================"
       user = TwitterUser.create(username: params[:username])
       user_timeline.each do |tweet|
-        user.tweets.create(text: tweet.text)
-        @tweets << tweet.text
+        user.tweets.create(text: tweet.text,
+                          twitter_time: tweet.created_at)
+        @tweets << tweet
       end
       @tweets
     else
